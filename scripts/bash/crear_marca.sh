@@ -68,7 +68,7 @@ while true; do
 
 
     FECHA_HORA=$(date +"%H:%M-%d/%m/%y")
-    echo "$FECHA_HORA | MARCA | Marca '$NOMBRE' creada en categoría '$CATEGORIA'" >> "$LOG"
+    echo "$FECHA_HORA | MARCA | Marca '$NOMBRE' creada correctamente." >> "$LOG"
 
     read -n 1 -s -r -p "Pulsa una tecla para continuar..."
     clear
