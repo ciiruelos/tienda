@@ -1,6 +1,7 @@
 #!/bin/bash
-
+clear
 TIENDA="/tiendas/ElVestidor"
+
 
 while true; do
     echo -n "Indica el nombre de la nueva categoría (s para salir): "

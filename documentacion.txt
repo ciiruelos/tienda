@@ -1,0 +1,1 @@
+dar permisos 777 a /tiendas/ElVestidor

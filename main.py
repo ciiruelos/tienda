@@ -1,17 +1,15 @@
 import curses
 import subprocess
 import datetime
-import os
 
-LOG_FILE = "programa.log"
+LOG = "programa.log"
 
-# Función para escribir logs
+# Función para escribir solo inicio y fin de sesión
 def escribir_log(tipo, descripcion):
     ahora = datetime.datetime.now()
     fecha_hora = ahora.strftime("%H:%M-%d/%m/%y")
-    linea = f"{fecha_hora} | {tipo.upper()} | {descripcion}\n"
-    with open(LOG_FILE, "a", encoding="utf-8") as f:
-        f.write(linea)
+    with open(LOG, "a", encoding="utf-8") as f:
+        f.write(f"{fecha_hora} | {tipo.upper()} | {descripcion}\n")
 
 # Funciones del menú Crear
 def crear(terminal):
@@ -21,11 +19,13 @@ def crear(terminal):
     while True:
         terminal.clear()
         terminal.addstr("¿Qué quieres crear?\n", curses.A_BOLD | curses.A_UNDERLINE)
+
         for i, opcion in enumerate(opciones):
             if i == seleccion:
                 terminal.addstr(f"> {opcion}\n", curses.A_REVERSE)
             else:
                 terminal.addstr(f"  {opcion}\n")
+
         terminal.refresh()
         key = terminal.getch()
 
@@ -34,29 +34,22 @@ def crear(terminal):
         elif key == curses.KEY_DOWN and seleccion < len(opciones) - 1:
             seleccion += 1
         elif key in [curses.KEY_ENTER, ord("\n")]:
-            curses.endwin()
             if seleccion == 0:
-                if subprocess.run("bash scripts/bash/crear_categoria.sh", shell=True).returncode == 0:
-                    escribir_log("CATEGORIA", "Categoría creada")
-                else:
-                    escribir_log("ERROR", "Error al crear categoría")
+                curses.endwin()
+                subprocess.run(["bash", "scripts/bash/crear_categoria.sh"])
                 return
             elif seleccion == 1:
-                if subprocess.run("python3 scripts/python/elegir_marca.py", shell=True).returncode == 0:
-                    escribir_log("CATEGORIA", "Marca creada")
-                else:
-                    escribir_log("ERROR", "Error al crear marca")
+                curses.endwin()
+                subprocess.run(["python3", "scripts/python/elegir_marca.py"])
                 return
             elif seleccion == 2:
-                if subprocess.run("python3 scripts/python/crear_producto.py", shell=True).returncode == 0:
-                    escribir_log("PRODUCTO", "Producto creado")
-                else:
-                    escribir_log("ERROR", "Error al crear producto")
+                curses.endwin()
+                subprocess.run(["python3", "scripts/python/crear_producto.py"])
                 return
             elif seleccion == 3:
                 return
 
-# Función del menú Buscar
+# Funciones del menú Buscar
 def buscar(terminal):
     opciones = ["Busqueda por descripcion", "Busqueda por codigo", "Volver"]
     seleccion = 0
@@ -64,11 +57,13 @@ def buscar(terminal):
     while True:
         terminal.clear()
         terminal.addstr("¿Cómo quieres buscar?\n", curses.A_BOLD | curses.A_UNDERLINE)
+
         for i, opcion in enumerate(opciones):
             if i == seleccion:
                 terminal.addstr(f"> {opcion}\n", curses.A_REVERSE)
             else:
                 terminal.addstr(f"  {opcion}\n")
+
         terminal.refresh()
         key = terminal.getch()
 
@@ -77,18 +72,13 @@ def buscar(terminal):
         elif key == curses.KEY_DOWN and seleccion < len(opciones) - 1:
             seleccion += 1
         elif key in [curses.KEY_ENTER, ord("\n")]:
-            curses.endwin()
             if seleccion == 0:
-                if subprocess.run("bash scripts/bash/buscar_descripcion.sh", shell=True).returncode == 0:
-                    escribir_log("PRODUCTO", "Búsqueda por descripción realizada")
-                else:
-                    escribir_log("ERROR", "Error en búsqueda por descripción")
+                curses.endwin()
+                subprocess.run(["bash", "scripts/bash/buscar_descripcion.sh"])
                 return
             elif seleccion == 1:
-                if subprocess.run("bash scripts/bash/buscar_codigo.sh", shell=True).returncode == 0:
-                    escribir_log("PRODUCTO", "Búsqueda por código realizada")
-                else:
-                    escribir_log("ERROR", "Error en búsqueda por código")
+                curses.endwin()
+                subprocess.run(["bash", "scripts/bash/buscar_codigo.sh"])
                 return
             elif seleccion == 2:
                 return
@@ -101,11 +91,13 @@ def confirmar_salida(terminal):
     while True:
         terminal.clear()
         terminal.addstr("¿Deseas salir?\n", curses.A_BOLD | curses.A_UNDERLINE)
+
         for i, opcion in enumerate(opciones):
             if i == seleccion:
                 terminal.addstr(f"> {opcion}\n", curses.A_REVERSE)
             else:
                 terminal.addstr(f"  {opcion}\n")
+
         terminal.refresh()
         key = terminal.getch()
 
@@ -114,7 +106,7 @@ def confirmar_salida(terminal):
         elif key == curses.KEY_DOWN and seleccion < len(opciones) - 1:
             seleccion += 1
         elif key in [curses.KEY_ENTER, ord("\n")]:
-            return seleccion == 1
+            return seleccion == 1  # True si "Sí"
 
 # Menú principal
 def menu(terminal):
@@ -124,11 +116,13 @@ def menu(terminal):
     while True:
         terminal.clear()
         terminal.addstr("Menu de Opciones\n", curses.A_BOLD | curses.A_UNDERLINE)
+
         for i, opcion in enumerate(opciones):
             if i == seleccion:
                 terminal.addstr(f"> {opcion}\n", curses.A_REVERSE)
             else:
                 terminal.addstr(f"  {opcion}\n")
+
         terminal.refresh()
         key = terminal.getch()
 
