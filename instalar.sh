@@ -5,16 +5,24 @@ read respuesta
 
 if [[ "$respuesta" == "S" || "$respuesta" == "s" ]]; then
     mkdir -p /tiendas/ElVestidor/Mujer
+    chmod 777 /tiendas/ElVestidor
+    chmod 777 /tiendas/ElVestidor/Mujer
     cd /tiendas/ElVestidor/Mujer
     mkdir -p Zara Stradivarius Bershka
+    chmod 777 Zara Stradivarius Bershka
+    
 
     mkdir -p /tiendas/ElVestidor/Hombre
+    chmod 777 /tiendas/ElVestidor/Hombre
     cd /tiendas/ElVestidor/Hombre
     mkdir -p Nike Adidas Levis
+    chmod 777 Nike Adidas Levis
 
     mkdir -p /tiendas/ElVestidor/Ninio
+    chmod 777 /tiendas/ElVestidor/Ninio
     cd /tiendas/ElVestidor/Ninio
     mkdir -p GapKids HMKids ZaraKids
+    chmod 777 GapKids HMKids ZaraKids
 
     cat <<EOF > /tiendas/ElVestidor/Mujer/Zara/001.json
 {

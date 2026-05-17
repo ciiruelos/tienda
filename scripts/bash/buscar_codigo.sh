@@ -2,26 +2,25 @@
 
 clear
 
-# Pedimos el codigo
 read -p "Indica el codigo del producto: " codigo
 
-# Comprobamos que no este vacio
+#comprobamos que se escriba un codigo y que no este vacio
 if [[ -z "$codigo" ]]; then
     read -n1 -p "No puedes dejar el codigo vacio"
     exit
 fi
 
-# Buscamos coincidencias
+#buscar coincidencias
 mapfile -t resultados < <(find /tiendas/ElVestidor -name "$codigo.json")
 
-# Comprobamos si hay resultados
+#comprobar si se han encontrado resultados
 if [[ ${#resultados[@]} -eq 0 ]]; then
     echo "No se ha encontrado ninguna coincidencia"
     read -n1 -p "Pulsa una tecla para volver"
     exit
 fi
 
-# Si hay varias coincidencias las mostramos
+#mostrar si hay varias coincidencias
 if [[ ${#resultados[@]} -gt 1 ]]; then
 
     echo ""
@@ -36,7 +35,7 @@ if [[ ${#resultados[@]} -gt 1 ]]; then
 
     clear
 
-    # Validamos opcion
+    #validar opcion
     if [[ $opcion -lt 1 || $opcion -gt ${#resultados[@]} ]]; then
         read -n1 -p "Opcion no valida"
         exit
@@ -50,14 +49,14 @@ else
 
 fi
 
-# Obtenemos datos del JSON
+#obtener datos del json
 nombre=$(jq -r '.nombre' "$ruta")
 descripcion=$(jq -r '.descripcion' "$ruta")
 precio=$(jq -r '.precio' "$ruta")
 stock=$(jq -r '.stock' "$ruta")
 envase=$(jq -r '.envase' "$ruta")
 
-# Mostramos producto
+
 echo ""
 echo "Producto encontrado"
 echo "-------------------"
@@ -66,5 +65,24 @@ echo "Descripcion: $descripcion"
 echo "Precio: $precio"
 echo "Stock: $stock"
 echo "Envase: $envase"
+
 echo ""
-read -n1 -p "Pulsa una tecla para volver"
+echo "¿Qué desea hacer?"
+echo "Editar (e), Borrar (b) o Volver (v)"
+echo ""
+read -p "Seleccione una opción: " opcion
+
+clear
+
+if [[ $opcion == "e" || $opcion == "E" ]]; then
+    bash scripts/bash/acciones_producto.sh editar "$ruta"
+elif [[ $opcion == "b" || $opcion == "B" ]]; then
+    bash scripts/bash/acciones_producto.sh borrar "$ruta"
+elif [[ $opcion == "v" || $opcion == "V" ]]; then
+    exit
+else
+    echo "Opción no válida"
+    read -n1 -p "Pulsa una tecla para volver"
+    exit
+    clear
+fi

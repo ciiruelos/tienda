@@ -16,6 +16,12 @@ while true; do
         continue
     fi
 
+        # validar que sea numérico
+    if [[ ! "$CODIGO" =~ ^[0-9]+$ ]]; then
+        echo "Error: el código debe ser numérico."
+        continue
+    fi
+
     #comprobar que el producto no exista en toda la tienda.
     EXISTE=$(find "$TIENDA" -name "$CODIGO.json" 2>/dev/null)
     if [ "$EXISTE" != "" ]; then
